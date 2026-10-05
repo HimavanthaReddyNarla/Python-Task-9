@@ -1,0 +1,5 @@
+Python makes files useful.
+Read one line at a time.
+Use loops to process text.
+Keep student records safely.
+Practice a little every day.

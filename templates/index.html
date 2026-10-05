@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Python File Lab</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</head>
+<body data-selected="{{ selected }}">
+  <header class="topbar">
+    <a class="wordmark" href="/" aria-label="Python File Lab home">
+      <span class="wordmark-icon">Py</span>
+      <span>FILE LAB</span>
+    </a>
+    <div class="local-state"><span class="state-dot"></span> LOCAL WORKSPACE</div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" aria-label="Python exercises">
+      <div class="sidebar-heading">
+        <p class="eyebrow">TODAY'S PRACTICE</p>
+        <p class="sidebar-count">15 exercises</p>
+      </div>
+      <nav id="task-list" class="task-list">
+        {% for task in tasks %}
+        <button class="task-link{% if loop.index == selected %} is-active{% endif %}" type="button" data-task="{{ loop.index }}">
+          <span class="task-number">{{ "%02d"|format(loop.index) }}</span>
+          <span class="task-link-title">{{ task }}</span>
+        </button>
+        {% endfor %}
+      </nav>
+      <p class="sidebar-foot">FILES ARE SAVED IN THIS PROJECT</p>
+    </aside>
+
+    <main class="workbench">
+      <div class="page-heading">
+        <div>
+          <p class="eyebrow" id="task-kicker">EXERCISE 01 / 15</p>
+          <h1 id="task-title">{{ tasks[0] }}</h1>
+        </div>
+        <div class="folder-stamp"><span class="folder-mark"></span><span>PYTHON<br>FILE HANDLING</span></div>
+      </div>
+
+      <p class="task-description" id="task-description"></p>
+
+      <section class="exercise-panel" aria-labelledby="task-title">
+        <div class="panel-topline"><span>INPUT</span><span id="operation-hint">SET UP AND RUN</span></div>
+        <form id="task-form" action="{{ url_for('run_exercise') }}" method="post">
+          <input type="hidden" name="task" id="task-id" value="{{ selected }}">
+          <div id="dynamic-fields" class="field-grid"></div>
+          <div class="form-footer">
+            <p id="file-note">Changes are written to local text files.</p>
+            <button class="run-button" type="submit">Run exercise <span aria-hidden="true">&#8594;</span></button>
+          </div>
+        </form>
+      </section>
+
+      <section class="output-panel" aria-live="polite">
+        <div class="output-heading"><div><span class="output-square"></span><h2>OUTPUT</h2></div><span class="output-tag">PYTHON RESPONSE</span></div>
+        <pre id="output-text" class="output-text{% if not output %} is-empty{% endif %}">{% if output %}{{ output }}{% else %}Choose an exercise and run it. Results appear here.{% endif %}</pre>
+      </section>
+
+      <footer class="page-footer"><span>15 PRACTICE TASKS</span><span>TEXT FILES + STUDENT RECORDS</span></footer>
+    </main>
+  </div>
+</body>
+</html>
